@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시물 리스트 페이지</title>
+</head>
+
+<style>
+  .layout {
+    width: 600px;
+    margin: 0 auto;
+    margin-top: 50px;
+  }
+</style>
+
+<body>
+  <div class="layout">
+      <table>
+        <thead>
+          <tr>
+              <th>글번호</th>
+              <th>제목</th>
+              <th>작성자</th>
+              <th>작성일</th>
+              <th>조회수</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="board : ${list}">
+              <td th:text="${board.id}" style="text-align : center">1</td>
+              <td style="text-align : center">
+                  <a th:text="${board.title}" th:href="@{/board/view(id=${board.id})}"></a>
+              </td>
+              <td th:text="${board.writer}" style="text-align : center"></td>
+              <td th:text="${#temporals.format(board.date, 'yyyy-MM-dd HH:mm')}"></td>
+              <td th:text="${board.view_cnt}"></td>
+          </tr>
+        </tbody>
+      </table>
+      <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
+          <a th:if="${page != nowPage}" th:href="@{/(page = ${page - 1}, searchKeyword =${param.searchKeyword})}" th:text="${page}"></a>
+          <strong th:if="${page == nowPage}" th:text="${page}" style="color : red"></strong>
+      </th:block>
+
+      <form th:action="@{/}" method="get">
+          <input type="text" name="searchKeyword">
+          <button type="submit">검색</button>
+      </form>
+  </div>
+</body>
+
+</html>
