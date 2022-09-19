@@ -2,7 +2,6 @@ package com.study.board.service;
 
 import com.study.board.dto.BoardDto;
 import com.study.board.entity.Board;
-import com.study.board.common.BeanConfiguration;
 import com.study.board.repository.BoardRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,7 @@ import javax.transaction.Transactional;
 public class BoardService {
     @Autowired // 알아서 읽어옴
     private BoardRepository boardRepository;
+    @Autowired
     private ModelMapper modelMapper;
 
     public BoardService(BoardRepository boardRepository){

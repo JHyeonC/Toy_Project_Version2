@@ -1,6 +1,7 @@
 package com.study.board.controller;
 
 import com.study.board.dto.BoardDto;
+import com.study.board.dto.FileDto;
 import com.study.board.entity.Board;
 import com.study.board.entity.File;
 import com.study.board.repository.FileRepository;
@@ -73,7 +74,6 @@ public class BoardController {
 
         if (list.getTotalElements() == 0){ // 검색결과 없으면 /board/list
             model.addAttribute("message", "검색 결과가 없습니다.");
-//            model.addAttribute("searchUrl", "/board/list");
             model.addAttribute("searchUrl", "/");
             return "message";
         }
@@ -92,8 +92,11 @@ public class BoardController {
     @GetMapping("/board/view") // localhost:8080/board/view?id = 1
     public String boardView(Model model, Integer id){
         BoardDto boardDto = this.boardService.boardView(id);
-        List<File> files = this.fileRepository.findByBoardId(id);
         boardDto.setView_cnt(this.boardService.updateCount(id));
+
+        List<FileDto> files = this.fileService.getFiles(id);
+//        List<File> files = this.fileRepository.findByBoardId(id);
+
         model.addAttribute("boardDto", boardDto);
         model.addAttribute("all", files);
         return "boardView";
@@ -118,6 +121,7 @@ public class BoardController {
         this.boardService.write(boardDto);
         return "redirect:/";
     }
+
     @GetMapping("/attach/{id}")
     public ResponseEntity<Resource> downloadAttach(@PathVariable Integer id) throws MalformedURLException {
         File file = this.fileRepository.findById(id).orElse(null);
