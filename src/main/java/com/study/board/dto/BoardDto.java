@@ -24,19 +24,8 @@ public class BoardDto {
     private String filepath;
     private LocalDateTime date;
     private String writer;
+    @Column(nullable = false)
     private Integer view_cnt;
-
-
-    public Board toEntity(){
-        Board board = Board.builder()
-                .id(id)
-                .title(title)
-                .content(content)
-                .writer(writer)
-                .view_cnt(0)
-                .build();
-        return board;
-    }
 
     @Builder
     public BoardDto(Integer id, String title, String content, String filename, String filepath, String writer, LocalDateTime date, Integer view_cnt){
